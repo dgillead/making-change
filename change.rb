@@ -1,19 +1,31 @@
+require 'pry'
+
 def find_change_combinations(amount, coins)
   combinations = []
-  coins.each do |coin|
-    combinations.push(current_combination(amount, coin))
-  end
+  combinations.push(current_combination(amount, coins))
   p combinations
 end
 
-def current_combination(amount, coin)
+def current_combination(amount, coins)
   possible_combination = []
-  while possible_combination.sum < amount
+  confirmed_combination = []
+  counter = 0
+  # binding.pry
+  coins.each_with_index do |coin, index|
     possible_combination.push(coin)
-    if possible_combination.sum == amount
-      return possible_combination
+    # binding.pry
+    while possible_combination.sum <= amount
+      possible_combination.push(coins[index + counter])
+      # binding.pry
+      if possible_combination.sum == amount
+        confirmed_combination.push(possible_combination)
+        counter += 1
+        possible_combination.clear
+        # binding.pry
+      end
     end
   end
+  confirmed_combination
 end
 
 find_change_combinations(4, [1, 2, 3])
